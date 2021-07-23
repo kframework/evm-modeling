@@ -128,8 +128,8 @@ In the comments next to each cell, we've marked which component of the YellowPap
                 <acctID>      0                      </acctID>
                 <balance>     0                      </balance>
                 <code>        .ByteArray:AccountCode </code>
-                <storage>     .Map                   </storage>
-                <origStorage> .Map                   </origStorage>
+                <storage>     .Map:ContractStorage   </storage>
+                <origStorage> .Map:ContractStorage   </origStorage>
                 <nonce>       0                      </nonce>
               </account>
             </accounts>
@@ -761,11 +761,11 @@ These are just used by the other operators for shuffling local execution state a
 
     rule <k> #newExistingAccount ACCT => . ... </k>
          <account>
-           <acctID>      ACCT      </acctID>
-           <code>        WS        </code>
-           <nonce>       0         </nonce>
-           <storage>     _ => .Map </storage>
-           <origStorage> _ => .Map </origStorage>
+           <acctID>      ACCT                      </acctID>
+           <code>        WS                        </code>
+           <nonce>       0                         </nonce>
+           <storage>     _ => .Map:ContractStorage </storage>
+           <origStorage> _ => .Map:ContractStorage </origStorage>
            ...
          </account>
       requires #sizeByteArray(WS) ==Int 0
@@ -1237,8 +1237,8 @@ These rules reach into the network state and load/store from account storage:
     rule <k> SSTORE INDEX NEW => . ... </k>
          <id> ACCT </id>
          <account>
-           <acctID> ACCT </acctID>
-           <storage> STORAGE => STORAGE [ INDEX <- NEW ] </storage>
+           <acctID> ACCT                                    </acctID>
+           <storage> STORAGE => #write(STORAGE, INDEX, NEW) </storage>
            ...
          </account>
 ```
