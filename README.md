@@ -91,7 +91,7 @@ On OSX, using [Homebrew](https://brew.sh/), after installing the command line to
 ```sh
 brew tap homebrew/cask
 brew install --cask java
-brew install automake libtool gmp mpfr pkg-config maven z3 libffi openssl python
+brew install automake libtool llvm gmp mpfr pkg-config maven z3 libffi openssl python
 make libsecp256k1
 ```
 
