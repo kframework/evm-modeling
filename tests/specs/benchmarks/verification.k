@@ -32,7 +32,7 @@ module VERIFICATION
   // Gas Calculation
   // ########################
 
-    rule Rsstore(BYZANTIUM, NEW, _CURR, _ORIG) => 0  requires NEW =/=Int 0 [simplification]
+    rule Rsstore(_BYZANTIUM, NEW, _CURR, _ORIG) => 0  requires NEW =/=Int 0 [simplification]
 
   // ########################
   // Ecrecover
@@ -42,27 +42,12 @@ module VERIFICATION
 
     //case 0 is never wrapped into #symEcrec(), corresponds to #ecrecEmpty(DATA) == true
     rule 0 <Int   #symEcrec(_DATA)             => true [simplification]
-
     //that's because the result in concrete semantics is trimmed to Address range.
     rule          #symEcrec(_DATA) <Int pow160 => true [simplification]
-
     // Lemmas implied by the above, but still required to match side conditions of #padToWidth rule in lemmas.md
     // General range conversion lemmas like below are not an option, dramatic performance decrease:
     rule 0 <=Int  #symEcrec(_DATA)             => true [simplification]
     rule          #symEcrec(_DATA) <Int pow256 => true [simplification]
-
-  // ########################
-  // Symbolic Call
-  // ########################
-
-    syntax Int ::= #extCodeSize ( Int )  [function]
- // -----------------------------------------------
-
-  // ########################
-  // Rule Replacement
-  // ########################
-
-    claim <k> EXTCODESIZE ACCT => #extCodeSize(ACCT) ~> #push ... </k>  [trusted]
 
   // ########################
   // ABI Encoding
@@ -80,17 +65,8 @@ module VERIFICATION
   // Memory Usage
   // ########################
 
-    rule #memoryUsageUpdate(#memoryUsageUpdate(MU, START0, WIDTH0), START1, WIDTH1) => #memoryUsageUpdate(MU, START0, WIDTH0)
-      requires START1 +Int WIDTH1 <=Int START0 +Int WIDTH0
-       andBool 0  <Int WIDTH0
-       andBool 0 <=Int WIDTH1
-      [simplification]
-
-    rule #memoryUsageUpdate(#memoryUsageUpdate(MU, START0, WIDTH0), START1, WIDTH1) => #memoryUsageUpdate(MU, START1, WIDTH1)
-      requires START0 +Int WIDTH0 <Int START1 +Int WIDTH1
-       andBool 0 <=Int WIDTH0
-       andBool 0  <Int WIDTH1
-      [simplification]
+    rule #memoryUsageUpdate(#memoryUsageUpdate(MU, START0, WIDTH0), START1, WIDTH1) => #memoryUsageUpdate(MU, START0, WIDTH0) requires START1 +Int WIDTH1 <=Int START0 +Int WIDTH0 andBool 0  <Int WIDTH0 andBool 0 <=Int WIDTH1 [simplification]
+    rule #memoryUsageUpdate(#memoryUsageUpdate(MU, START0, WIDTH0), START1, WIDTH1) => #memoryUsageUpdate(MU, START1, WIDTH1) requires START0 +Int WIDTH0  <Int START1 +Int WIDTH1 andBool 0 <=Int WIDTH0 andBool 0  <Int WIDTH1 [simplification]
 
     rule 0 <=Int #memoryUsageUpdate(_MU, _START, _WIDTH) => true [simplification]
 
@@ -98,23 +74,22 @@ module VERIFICATION
   // Buffer Reasoning
   // ########################
 
+    // ++-identity-right
     rule WS ++ .ByteArray => WS [simplification]
 
+    // ++-associativity
     rule ( WS1 ++ WS2 ) ++ WS3 => WS1 ++ ( WS2 ++ WS3 ) [simplification]
 
     rule #sizeWordStack(WS, N) <Int SIZE => #sizeWordStack(WS, 0) +Int N <Int SIZE  requires N =/=Int 0 [simplification]
 
     rule SIZELIMIT <Int #sizeWordStack(WS, N) +Int DELTA  => SIZELIMIT <Int (#sizeWordStack(WS, 0) +Int N) +Int DELTA  requires N =/=Int 0 [simplification]
-    rule SIZELIMIT <Int #sizeWordStack(WS, N)             => SIZELIMIT <Int #sizeWordStack(WS, 0) +Int N               requires N =/=Int 0 [simplification]
+    rule SIZELIMIT <Int #sizeWordStack(WS, N)             => SIZELIMIT <Int  #sizeWordStack(WS, 0) +Int N              requires N =/=Int 0 [simplification]
 
     rule #sizeWordStack(WS, N) <=Int SIZE => #sizeWordStack(WS, 0) +Int N <=Int SIZE  requires N =/=Int 0 [simplification]
 
   // ########################
   // Range
   // ########################
-
-    rule 0 <=Int (_X modInt _Y)         => true                    [simplification]
-    rule         (_X modInt  Y) <Int Y  => true  requires Y >Int 0 [simplification]
 
     rule 0 <=Int 2 ^Int _X             => true                      [simplification]
     rule         2 ^Int  X <Int pow256 => true  requires X <Int 256 [simplification]
@@ -135,8 +110,6 @@ module VERIFICATION
   // Simplification
   // ########################
 
-    rule #asWord(#buf(32, DATA)) => DATA  requires #rangeUInt(256, DATA) [simplification]
-
     rule #range(_M [ N := #buf(WIDTH, DATA) ], N, WIDTH) => #buf(WIDTH, DATA) [simplification]
 
     rule #asWord(WS) &Int maxUInt256 => #asWord(WS) [simplification]
@@ -156,49 +129,12 @@ module VERIFICATION
   // Arithmetic
   // ########################
 
-    rule (A +Int I2) +Int (I3 -Int A) => I2 +Int I3 [simplification]
-    rule (A +Int I2) -Int (A +Int I3) => I2 -Int I3 [simplification]
-    rule (A +Int I2) -Int (I3 +Int A) => I2 -Int I3 [simplification]
-
-    rule (I1 +Int I2) -Int (I3 +Int I1) => I2 -Int I3 [simplification]
-
-    rule A -Int (A -Int I1) => I1 [simplification]
-
-    rule (A +Int I1) -Int A => I1 [simplification]
-
-    rule (A +Int B) +Int (C -Int B) => A +Int C [simplification]
-
-    rule (A +Int B +Int C) -Int (A +Int D) => B +Int (C -Int D) [simplification]
-
-    rule (A +Int B +Int C +Int D +Int E) -Int (A +Int C +Int F) => B +Int D +Int E -Int F [simplification]
-
-    // Simplify Cmem(_,_) - Cmem(_, _)
-    rule A +Int (I1 -Int A) => I1 [simplification]
-    rule (I1 +Int (A -Int I0)) +Int (I2 -Int A) => I1 +Int (I2 -Int I0) [simplification]
-
-    // safeMath mul check c / a == b where c == a * b
-    rule (X *Int Y) /Int X => Y  requires X =/=Int 0 [simplification]
-
-    rule I1 *Int A +Int I2 *Int A => (I1 +Int I2) *Int A [simplification]
-
-    rule I1 *Int A +Int B +Int C +Int D +Int I2 *Int A => (I1 +Int I2) *Int A +Int B +Int C +Int D [simplification]
-
-    rule N -Int N => 0 [simplification]
-
     rule 2 ^%Int X pow256 => 2 ^Int X  requires 0 <=Int X andBool X <Int 256 [simplification]
 
-    rule X modInt Y => X  requires 0 <=Int X andBool X <Int Y [simplification]
-
-    rule ((X *Int Y) /Int Z) /Int Y => X /Int Z  requires Y =/=Int 0 [simplification]
-
-    // x &Int (NOT 31)
+    // X &Int (NOT 31)
     rule X &Int 115792089237316195423570985008687907853269984665640564039457584007913129639904 => (X /Int 32) *Int 32  requires 0 <=Int X [simplification]
 
-    rule (X /Int 32) *Int 32 => X  requires X modInt 32 ==Int 0 [simplification]
-
     rule #ceil32(X) => X  requires X modInt 32 ==Int 0 [simplification]
-
-    rule 0 <Int 1 <<Int N => true  requires 0 <=Int N [simplification]
 
     rule X +Int Y <Int pow256 => true  requires X <=Int pow16 andBool Y <Int pow16 [simplification]
 
@@ -211,12 +147,6 @@ endmodule
 module VERIFICATION-HASKELL [symbolic, kore]
     imports VERIFICATION-COMMON
     imports INFINITE-GAS
-
-  // ########################
-  // Arithmetic
-  // ########################
-
-    rule X +Int Y <Int Z => X <Int Z -Int Y [concrete(Y), simplification]
 
   // ########################
   // Buffer Reasoning
@@ -273,20 +203,6 @@ module VERIFICATION-JAVA [symbolic, kast]
   // ########################
   // Arithmetic
   // ########################
-
-    rule ((A +Int I1) +Int B) +Int I2 => (A +Int B) +Int (I1 +Int I2)
-      requires notBool #isConcrete(A)
-       andBool notBool #isConcrete(B)
-       andBool #isConcrete(I1)
-       andBool #isConcrete(I2)
-      [simplification]
-
-    rule (A +Int I1) +Int (B +Int I2) => (A +Int B) +Int (I1 +Int I2)
-      requires notBool #isConcrete(A)
-       andBool notBool #isConcrete(B)
-       andBool #isConcrete(I1)
-       andBool #isConcrete(I2)
-      [simplification]
 
     rule chop(X +Int Y) => X +Int Y
       requires #range(0 <= X <= pow16)

@@ -1,6 +1,8 @@
 requires "../infinite-gas.k"
+requires "../int-simplification.k"
 
 module VERIFICATION
+    imports INT-SIMPLIFICATION
     imports INFINITE-GAS
 
     syntax KItem ::= runLemma ( Step ) | doneLemma ( Step )
