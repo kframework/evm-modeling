@@ -20,6 +20,7 @@ INSTALL_INCLUDE=${INSTALL_LIB}/include
 install_k_bin=${INSTALL_LIB}/kframework/bin
 plugin_include=${INSTALL_LIB}/blockchain-k-plugin/include
 libff_dir=${INSTALL_LIB}/libff
+libcryptopp_dir=${INSTALL_LIB}/cryptopp
 
 export PATH="$install_k_bin:$INSTALL_BIN:$INSTALL_LIB:$PATH"
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-}:/usr/local/lib
@@ -56,7 +57,9 @@ run_kompile() {
                         kompile_opts+=( -ccopt -lprocps )
                     elif [[ "$(uname -s)" == 'Darwin' ]]; then
                         openssl_root="$(brew --prefix openssl)"
-                        kompile_opts+=( -I/usr/local/include -L/usr/local/lib -I${openssl_root}/include -L${openssl_root}/lib )
+                        brew_root="$(brew --prefix)"
+                        kompile_opts+=( -ccopt -I${brew_root}/include -ccopt -L/${brew_root}/lib -ccopt -I${openssl_root}/include -ccopt -L${openssl_root}/lib )
+                        kompile_opts+=( -ccopt -I${libcryptopp_dir}/include -ccopt -L/${libcryptopp_dir}/lib )
                     fi
                  ;;
         *)       fatal "Unknown backend for kompile: ${backend}" ;;
