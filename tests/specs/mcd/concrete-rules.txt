@@ -1,5 +1,5 @@
 EVM.allBut64th.pos
-EVM.Cextra
+EVM.Cextra.new
 EVM.Cmem
 EVM.Cnew
 EVM.Csstore.new
@@ -9,6 +9,19 @@ EVM.Cxfer.some
 EVM.#memoryUsageUpdate.some
 EVM.Rsstore.new
 EVM.Rsstore.old
+EVM.Caddraccess
+EVM.Cstorageaccess
+EVM.Csload.new
+EVM.Cextcodesize.new
+EVM.Cextcodesize.old
+EVM.Cextcodehash.new
+EVM.Cextcodehash.old
+EVM.Cextcodecopy.new
+EVM.Cextcodecopy.old
+EVM.Cbalance.new
+EVM.Cbalance.old
+EVM.Cmodexp.new
+EVM.Cmodexp.old
 EVM-TYPES.#asByteStack
 EVM-TYPES.#asByteStackAux.recursive
 EVM-TYPES.#asWord.recursive

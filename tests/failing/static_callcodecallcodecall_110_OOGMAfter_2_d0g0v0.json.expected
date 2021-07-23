@@ -88,6 +88,12 @@
         <refund>
           0
         </refund>
+        <accessedAccounts>
+          .Set
+        </accessedAccounts>
+        <accessedStorage>
+          .Map
+        </accessedStorage>
       </substate>
       <gasPrice>
         1
@@ -319,6 +325,15 @@
           <data>
             b""
           </data>
+          <txType>
+            0
+          </txType>
+          <txAccess>
+            [ .JSONs ]
+          </txAccess>
+          <txChainID>
+            0
+          </txChainID>
         </message>
       </messages>
     </network>

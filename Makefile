@@ -311,7 +311,7 @@ TEST_OPTIONS :=
 CHECK        := git --no-pager diff --no-index --ignore-all-space -R
 
 KEVM_MODE     := NORMAL
-KEVM_SCHEDULE := ISTANBUL
+KEVM_SCHEDULE := BERLIN
 KEVM_CHAINID  := 1
 
 KPROVE_MODULE  := VERIFICATION
@@ -324,8 +324,8 @@ test: test-conformance test-prove test-interactive test-parse
 
 # Generic Test Harnesses
 
-tests/ethereum-tests/VMTests/%: KEVM_MODE     = VMTESTS
-tests/ethereum-tests/VMTests/%: KEVM_SCHEDULE = DEFAULT
+tests/ethereum-tests/LegacyTests/Constantinople/VMTests/%: KEVM_MODE     = VMTESTS
+tests/ethereum-tests/LegacyTests/Constantinople/VMTests/%: KEVM_SCHEDULE = DEFAULT
 
 tests/specs/benchmarks/functional-spec.k%: KPROVE_MODULE = FUNCTIONAL-SPEC-SYNTAX
 tests/specs/erc20/functional-spec.k%:      KPROVE_MODULE = FUNCTIONAL-SPEC-SYNTAX
@@ -376,9 +376,9 @@ tests/%.klab-prove: tests/%
 
 # Smoke Tests
 
-smoke_tests_run=tests/ethereum-tests/VMTests/vmArithmeticTest/add0.json \
-                tests/ethereum-tests/VMTests/vmIOandFlowOperations/pop1.json \
-                tests/interactive/sumTo10.evm
+smoke_tests_run = tests/ethereum-tests/LegacyTests/Constantinople/VMTests/vmArithmeticTest/add0.json      \
+                  tests/ethereum-tests/LegacyTests/Constantinople/VMTests/vmIOandFlowOperations/pop1.json \
+                  tests/interactive/sumTo10.evm
 
 smoke_tests_prove=tests/specs/erc20/ds/transfer-failure-1-a-spec.k
 
@@ -395,7 +395,7 @@ test-slow-conformance: $(slow_conformance_tests:=.run)
 test-failing-conformance: $(failing_conformance_tests:=.run)
 test-conformance: test-vm test-bchain
 
-all_vm_tests     = $(wildcard tests/ethereum-tests/VMTests/*/*.json)
+all_vm_tests     = $(wildcard tests/ethereum-tests/LegacyTests/Constantinople/VMTests/*/*.json)
 quick_vm_tests   = $(filter-out $(slow_conformance_tests), $(all_vm_tests))
 passing_vm_tests = $(filter-out $(failing_conformance_tests), $(quick_vm_tests))
 rest_vm_tests    = $(filter-out $(passing_vm_tests), $(all_vm_tests))

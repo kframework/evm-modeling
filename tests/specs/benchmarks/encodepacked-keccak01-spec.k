@@ -37,6 +37,8 @@ module ENCODEPACKED-KECCAK01-SPEC
           <selfDestruct> _ </selfDestruct>
           <log> _ </log>
           <refund> _ </refund>
+          <accessedAccounts> _ => ?_ </accessedAccounts>
+          <accessedStorage> _ => ?_ </accessedStorage>
         </substate>
         <gasPrice> _ </gasPrice>
         <origin> _ </origin> // tx.origin

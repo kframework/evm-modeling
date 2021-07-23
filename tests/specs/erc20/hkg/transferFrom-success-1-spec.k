@@ -45,6 +45,8 @@ module TRANSFERFROM-SUCCESS-1-SPEC
           <selfDestruct> _ </selfDestruct>
           <log> _:List ( .List => ListItem(#abiEventLog(ACCT_ID, "Transfer", #indexed(#address(FROM_ID)), #indexed(#address(TO_ID)), #uint256(VALUE))) ) </log>
           <refund> _ => ?_ </refund> // TODO: more detail
+          <accessedAccounts> _ => ?_ </accessedAccounts>
+          <accessedStorage> _ => ?_ </accessedStorage>
         </substate>
 
         <gasPrice> _ </gasPrice>

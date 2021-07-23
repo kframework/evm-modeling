@@ -85,6 +85,12 @@
         <refund>
           0
         </refund>
+        <accessedAccounts>
+        .Set
+        </accessedAccounts>
+        <accessedStorage>
+          .Map
+        </accessedStorage>
       </substate>
       <gasPrice>
         0

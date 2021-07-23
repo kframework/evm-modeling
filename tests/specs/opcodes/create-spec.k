@@ -27,7 +27,7 @@ module CREATE-SPEC
                 <endPC> _ => ?_ </endPC>
                 <callStack> _ </callStack>
                 <interimStates> _ </interimStates>
-                <touchedAccounts> _ => ?_ </touchedAccounts>
+                <touchedAccounts> _ </touchedAccounts>
 
                 <callState>
                   <program> _ </program>
@@ -54,6 +54,10 @@ module CREATE-SPEC
                   <static> false </static>
                   <callDepth> CALL_DEPTH </callDepth>
                 </callState>
+                <substate>
+                  <accessedAccounts> _ => ?_  </accessedAccounts>
+                  ...
+                </substate>
                 ...
               </evm>
               <network>
@@ -108,7 +112,7 @@ module CREATE-SPEC
                 <endPC> _ => ?_ </endPC>
                 <callStack> _ </callStack>
                 <interimStates> _ </interimStates>
-                <touchedAccounts> _ </touchedAccounts>
+                <touchedAccounts> _ => ?_ </touchedAccounts>
 
                 <callState>
                   <program> #range(#mapWithCode, #memStart, #memWidth) </program>
@@ -130,6 +134,10 @@ module CREATE-SPEC
                   <static> false </static>
                   <callDepth> CALL_DEPTH </callDepth>
                 </callState>
+                <substate>
+                  <accessedAccounts> _ => ?_  </accessedAccounts>
+                  ...
+                </substate>
                 ...
               </evm>
               <network>

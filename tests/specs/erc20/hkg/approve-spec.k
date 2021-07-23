@@ -45,6 +45,8 @@ module APPROVE-SPEC
           <selfDestruct> _ </selfDestruct>
           <log> _:List ( .List => ListItem(#abiEventLog(ACCT_ID, "Approval", #indexed(#address(CALLER_ID)), #indexed(#address(SPENDER)), #uint256(VALUE))) ) </log>
           <refund> _ => ?_ </refund> // TODO: more detail
+          <accessedAccounts> _ => ?_ </accessedAccounts>
+          <accessedStorage> _ => ?_ </accessedStorage>
         </substate>
 
         <gasPrice> _ </gasPrice>

@@ -1,5 +1,2 @@
 tests/ethereum-tests/LegacyTests/Constantinople/BlockchainTests/GeneralStateTests/stQuadraticComplexityTest/Call50000bytesContract50_2_d0g1v0.json
 tests/ethereum-tests/LegacyTests/Constantinople/BlockchainTests/GeneralStateTests/stStaticCall/static_Call50000bytesContract50_2_d1g0v0.json
-tests/ethereum-tests/VMTests/vmPerformance/loop-add-10M.json
-tests/ethereum-tests/VMTests/vmPerformance/loop-divadd-10M.json
-tests/ethereum-tests/VMTests/vmPerformance/loop-divadd-unr100-10M.json

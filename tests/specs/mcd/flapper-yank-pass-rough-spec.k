@@ -37,6 +37,8 @@ module FLAPPER-YANK-PASS-ROUGH-SPEC
             <selfDestruct> _VSelfDestruct </selfDestruct>
             <log> _ => ?_ </log>
             <refund> _Vrefund => ?_ </refund>
+            <accessedAccounts> _ => ?_ </accessedAccounts>
+            <accessedStorage> _ => ?_ </accessedStorage>
           </substate>
           <gasPrice> _ </gasPrice>
           <origin> ORIGIN_ID </origin>
@@ -292,6 +294,8 @@ module FLAPPER-YANK-PASS-ROUGH-SPEC
             <selfDestruct> _VSelfDestruct </selfDestruct>
             <log> _ => ?_ </log>
             <refund> _Vrefund => ?_ </refund>
+            <accessedAccounts> _ => ?_ </accessedAccounts>
+            <accessedStorage> _ => ?_ </accessedStorage>
           </substate>
           <gasPrice> _ </gasPrice>
           <origin> ORIGIN_ID </origin>

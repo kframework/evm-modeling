@@ -84,7 +84,7 @@ doOptimization() {
     rule_file="optimizer/${opcode_lower}.k"
     optimize_file="optimizer/optimize-spec.k"
 
-    make build-haskell build-lemmas -j8
+    make build-haskell -j8
 
     notif "Building: ${spec_file}"
     buildSpec "${opcode}" "${wordstack_number}" "$@" > "${spec_file}"

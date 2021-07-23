@@ -253,7 +253,7 @@ if [[ "$run_command" == 'help' ]] || [[ "$run_command" == '--help' ]] ; then
                  <spec> is a K specification to be proved.
                  <main> is a K definition to be kompiled, which may include files from KEVM.
                  <KEVM arg> is one of [--mode (NORMAL|VMTESTS)]
-                                      [--schedule (ISTANBUL|PETERSBURG|CONSTANTINOPLE|BYZANTIUM|SPURIOUS_DRAGON|TANGERINE_WHISTLE|HOMESTEAD|FRONTIER|DEFAULT)]
+                                      [--schedule (BERLIN|ISTANBUL|PETERSBURG|CONSTANTINOPLE|BYZANTIUM|SPURIOUS_DRAGON|TANGERINE_WHISTLE|HOMESTEAD|FRONTIER|DEFAULT)]
                                       [--chainid NNN]
                                       [--concrete-rules-file <concrete_rules_file>]
                                       [--bug-report]
@@ -289,7 +289,7 @@ profile_timeout="0"
 kore_prof_args=""
 bug_report=false
 mode=NORMAL
-schedule=ISTANBUL
+schedule=BERLIN
 chainid=1
 concrete_rules_file=
 [[ ! "$run_command" == 'prove' ]] || backend='java'

@@ -45,6 +45,8 @@ module TOTALSUPPLY-SPEC
           <selfDestruct> _ </selfDestruct>
           <log> _ </log>
           <refund> _ </refund> // TODO: more detail
+          <accessedAccounts> _ => ?_ </accessedAccounts>
+          <accessedStorage> _ => ?_ </accessedStorage>
         </substate>
 
         <gasPrice> _ </gasPrice>

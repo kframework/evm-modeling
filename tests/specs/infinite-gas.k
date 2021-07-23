@@ -161,6 +161,11 @@ module INFINITE-GAS-COMMON
     rule #gas(_)  <Int Csstore(_, _, _, _) => false [simplification]
     rule #gas(_) >=Int Csstore(_, _, _, _) => true  [simplification]
 
+    rule 0 <=Int Csload(_, _)       => true  [simplification]
+    rule Csload(_, _) <Int #gas(_)  => true  [simplification]
+    rule #gas(_)  <Int Csload(_, _) => false [simplification]
+    rule #gas(_) >=Int Csload(_, _) => true  [simplification]
+
     rule 0 <=Int Cmem(_, _)       => true  [simplification]
     rule Cmem(_, _) <Int #gas(_)  => true  [simplification]
     rule #gas(_) <Int Cmem(_, _)  => false [simplification]
@@ -183,5 +188,10 @@ module INFINITE-GAS-COMMON
     rule #gas(G') <Int G up/Int _  => false requires notBool #gas(G') <Int G  [simplification]
 
     rule 0 <=Int X *Int Y => true requires 0 <=Int X andBool 0 <=Int Y [simplification]
+
+    rule 0 <=Int Csload(_, _)       => true  [simplification]
+    rule Csload(_, _) <Int #gas(_)  => true  [simplification]
+    rule #gas(_) <Int Csload(_, _)  => false [simplification]
+    rule Csload(_, _) <=Int #gas(_) => true  [simplification]
 
 endmodule

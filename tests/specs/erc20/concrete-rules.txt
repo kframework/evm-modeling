@@ -1,4 +1,5 @@
-EVM.Cextra
+EVM.Cextra.new
+EVM.Cextra.old
 EVM.Cgascap
 EVM.Cmem
 EVM.Csstore.new
@@ -6,6 +7,19 @@ EVM.Csstore.old
 EVM.#memoryUsageUpdate.some
 EVM.Rsstore.new
 EVM.Rsstore.old
+EVM.Caddraccess
+EVM.Cstorageaccess
+EVM.Csload.new
+EVM.Cextcodesize.new
+EVM.Cextcodesize.old
+EVM.Cextcodehash.new
+EVM.Cextcodehash.old
+EVM.Cextcodecopy.new
+EVM.Cextcodecopy.old
+EVM.Cbalance.new
+EVM.Cbalance.old
+EVM.Cmodexp.new
+EVM.Cmodexp.old
 EVM-TYPES.#asByteStack
 EVM-TYPES.#asByteStackAux.recursive
 EVM-TYPES.#asWord.recursive

@@ -45,6 +45,8 @@ module TRANSFERFROM-FAILURE-2-C-SPEC
           <selfDestruct> _ </selfDestruct>
           <log> _ => ?_ </log>
           <refund> _ => ?_ </refund> // TODO: more detail
+          <accessedAccounts> _ => ?_ </accessedAccounts>
+          <accessedStorage> _ => ?_ </accessedStorage>
         </substate>
 
         <gasPrice> _ </gasPrice>

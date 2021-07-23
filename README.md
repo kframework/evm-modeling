@@ -182,10 +182,10 @@ Do note, however, that this is a security concern.
 
 You can call `kevm help` to get a quick summary of how to use the script.
 
-Run the file `tests/ethereum-tests/VMTests/vmArithmeticTest/add0.json`:
+Run the file `tests/ethereum-tests/LegacyTests/Constantinople/VMTests/vmArithmeticTest/add0.json`:
 
 ```sh
-kevm run tests/ethereum-tests/VMTests/vmArithmeticTest/add0.json --schedule DEFAULT --mode VMTESTS
+kevm run tests/ethereum-tests/LegacyTests/Constantinople/VMTests/vmArithmeticTest/add0.json --schedule DEFAULT --mode VMTESTS
 ```
 
 To run proofs, you can similarly use `kevm`.

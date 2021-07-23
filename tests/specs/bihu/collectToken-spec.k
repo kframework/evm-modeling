@@ -45,6 +45,8 @@ module COLLECTTOKEN-SPEC
           <selfDestruct> _ </selfDestruct>
           <log> _ </log>
           <refund> _ => ?_ </refund> // TODO: more detail
+          <accessedAccounts> _ => ?_ </accessedAccounts>
+          <accessedStorage> _ => ?_ </accessedStorage>
         </substate>
 
         <gasPrice> _ </gasPrice>
@@ -159,6 +161,8 @@ ensures ?VALUE ==Int @canExtractThisYear(COLLECTED +Int BAL, NOW, START) +Int BA
           <selfDestruct> _ </selfDestruct>
           <log> _ </log>
           <refund> _ </refund> // TODO: more detail
+          <accessedAccounts> _ => ?_ </accessedAccounts>
+          <accessedStorage> _ => ?_ </accessedStorage>
         </substate>
 
         <gasPrice> _ </gasPrice>
@@ -262,6 +266,8 @@ andBool GASCAP >=Int ((293 *Int (YEARCOUNT -Int INDEX)) +Int 26)
           <selfDestruct> _ </selfDestruct>
           <log> _ </log>
           <refund> _ </refund> // TODO: more detail
+          <accessedAccounts> _ => ?_ </accessedAccounts>
+          <accessedStorage> _ => ?_ </accessedStorage>
         </substate>
 
         <gasPrice> _ </gasPrice>
