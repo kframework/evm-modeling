@@ -178,20 +178,41 @@ where `F1 : F2 : F3 : F4` is the (two's complement) byte-array representation of
 ```k
     syntax Int ::= #getValue ( TypedArg ) [function]
  // ------------------------------------------------
-    rule #getValue(   #bool( X )) => X       requires #rangeBool(X)
-    rule #getValue(#address( X )) => X       requires #rangeAddress(X)
-    rule #getValue(  #uint8( X )) => X       requires #rangeUInt(8, X)
-    rule #getValue( #uint16( X )) => X       requires #rangeUInt(16, X)
-    rule #getValue( #uint48( X )) => X       requires #rangeUInt(48, X)
-    rule #getValue(#uint160( X )) => X       requires #rangeUInt(160, X)
-    rule #getValue(#uint256( X )) => X       requires #rangeUInt(256, X)
-    rule #getValue( #int128( X )) => chop(X) requires #rangeSInt(128, X)
-    rule #getValue( #int256( X )) => chop(X) requires #rangeSInt(256, X)
-    rule #getValue(#bytes32( X )) => X       requires #rangeUInt(256, X)
+    rule #getValue(      #bool( X )) => X        requires #rangeBool(X)
+    rule #getValue(   #address( X )) => #addr(X)
+    rule #getValue(     #uint8( X )) => X        requires #rangeUInt(8, X)
+    rule #getValue(    #uint16( X )) => X        requires #rangeUInt(16, X)
+    rule #getValue(    #uint48( X )) => X        requires #rangeUInt(48, X)
+    rule #getValue(   #uint160( X )) => X        requires #rangeUInt(160, X)
+    rule #getValue(   #uint256( X )) => X        requires #rangeUInt(256, X)
+    rule #getValue(    #int128( X )) => chop(X)  requires #rangeSInt(128, X)
+    rule #getValue(    #int256( X )) => chop(X)  requires #rangeSInt(256, X)
+    rule #getValue(   #bytes32( X )) => X        requires #rangeUInt(256, X)
 
     syntax Int ::= #ceil32 ( Int )
  // ------------------------------
     rule #ceil32(N) => (N up/Int 32) *Int 32 [macro]
+```
+
+This is the decoding of the typed arguments.
+
+```k
+    syntax TypedArg ::= #constructTypedArg ( String , String ) [function]
+//  ---------------------------------------------------------------------
+    rule #constructTypedArg(T, V) => #uint160  (              String2Base(V, 16) modInt pow160) requires T ==String "uint160"
+    rule #constructTypedArg(T, V) => #address  (              String2Base(V, 16) modInt pow160) requires T ==String "address"
+    rule #constructTypedArg(T, V) => #uint256  (              String2Base(V, 16) modInt pow256) requires T ==String "uint256"
+    rule #constructTypedArg(T, V) => #uint48   (               String2Base(V, 16) modInt pow48) requires T ==String "uint48"
+    rule #constructTypedArg(T, V) => #uint16   (               String2Base(V, 16) modInt pow16) requires T ==String "uint16"
+    rule #constructTypedArg(T, V) => #uint8    (                 String2Base(V, 16) modInt 256) requires T ==String "uint8"
+    rule #constructTypedArg(T, V) => #int256   ((String2Base(V, 16) modInt pow256) -Int pow256) requires T ==String "int256" andBool String2Base(V, 16) modInt pow256 >Int maxSInt256
+    rule #constructTypedArg(T, V) => #int256   (              String2Base(V, 16) modInt pow256) requires T ==String "int256" andBool String2Base(V, 16) modInt pow256 <=Int maxSInt256
+    rule #constructTypedArg(T, V) => #int128   ((String2Base(V, 16) modInt pow128) -Int pow128) requires T ==String "int128" andBool String2Base(V, 16) modInt pow128 >Int maxSInt128
+    rule #constructTypedArg(T, V) => #int128   (              String2Base(V, 16) modInt pow128) requires T ==String "int128" andBool String2Base(V, 16) modInt pow128 <=Int maxSInt128
+    rule #constructTypedArg(T, V) => #bytes    (                               String2Bytes(V)) requires T ==String "bytes"
+    rule #constructTypedArg(T, V) => #bytes32  (                              #parseHexWord(V)) requires T ==String "bytes32"
+    rule #constructTypedArg(T, V) => #bool     (                   String2Base(V, 16) modInt 2) requires T ==String "bool"
+    rule #constructTypedArg(T, V) => #string   (                                             V) requires T ==String "string"
 ```
 
 ### ABI Event Logs
